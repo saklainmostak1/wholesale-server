@@ -1,0 +1,44 @@
+[
+    {
+        "name":"New Brand Shirt",
+        "price":"500",
+        "image": "https://images-eu.ssl-images-amazon.com/images/I/71UrMl4jTfL._AC_UL600_SR600,400_.jpg",
+        "description": "Safe Trading Men Shirts Company on Leading B2B Platform. High Quality Men Shirts Company with Competitive Price. ",
+        "rating": "5"
+    },
+    {
+        "name":"New Brand T-Shirt",
+        "price":"500",
+        "image": "https://images.ctfassets.net/40akseett7bn/7jvmfDWiy0b3fRvXhmfN7L/feaa00918d05cfe9a1f4ea9f792b3894/tri-blend-t-shirt_mens_bubble.jpeg",
+        "description": "Buy An Exclusive Design, Donated By Some Of The World's Best Artists And Musicians. ",
+        "rating": "4.8"
+    },
+    {
+        "name":"Gents T-Shirt",
+        "price":"500",
+        "image": "https://static.vecteezy.com/system/resources/thumbnails/002/326/899/small_2x/white-blank-t-shirt-front-and-back-template-mockup-design-isolated-vector.jpg",
+        "description": "Safe Trading Men Shirts Company on Leading B2B Platform. High Quality Men Shirts Company with Competitive Price.",
+        "rating": "4.4"
+    },
+    {
+        "name":"Gents Shirt",
+        "price":"500",
+        "image": "https://images-eu.ssl-images-amazon.com/images/I/61WrmjKbNzS._AC_UL600_SR600,400_.jpg",
+        "description": "High Quality Men Shirts Company with Competitive Price. You can buy good shirt From here",
+        "rating": "4.9"
+    },
+    {
+        "name":"New Brand Jeans-Pant ",
+        "price":"500",
+        "image": "https://images-eu.ssl-images-amazon.com/images/I/81e0bfP5KqL._AC_UL600_SR600,400_.jpg",
+        "description": "Light weight jeans with multi-directional weave and detailed back pockets give an arresting look to the wearer.",
+        "rating": "5"
+    },
+    {
+        "name":"Gents Jeans-Pant",
+        "price":"500",
+        "image": "https://static-bebeautiful-in.unileverservices.com/Denim%20Pants%20body%20shape_03.jpg",
+        "description": "Since 1979 the BIG STAR brand was the guarantee of the highest quality and top design of clothes that followed current market trends.",
+        "rating": "4.5"
+    }
+]

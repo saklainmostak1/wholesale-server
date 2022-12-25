@@ -24,7 +24,11 @@ async function run(){
             const result = await allProductsCollection.find(query).limit(6).toArray()
             res.send(result)
         })
-      
+        app.get('/allProducts', async(req, res) =>{
+            const query = {}
+            const result = await allProductsCollection.find(query).toArray()
+            res.send(result)
+        })
 
     }
     finally{

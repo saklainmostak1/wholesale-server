@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000
@@ -34,6 +34,12 @@ async function run(){
             const result = await allProductsCollection.find(query).toArray()
             res.send(result)
         })
+        app.get('/allProducts/:id', async(req, res) =>{
+            const id = req.params.id
+            const filter = {_id: ObjectId(id)}
+            const result = await allProductsCollection.findOne(filter)
+            res.send(result)
+        })
         app.get('/ratings', async(req, res) =>{
             const query = {}
             const result = await ratingCollection.find(query).limit(6).toArray()
@@ -42,6 +48,11 @@ async function run(){
         app.get('/contact', async(req, res) =>{
             const query = {}
             const result = await contactCollection.find(query).limit(6).toArray()
+            res.send(result)
+        })
+        app.get('/users', async(req, res) =>{
+            const query = {}
+            const result = await usersCollection.find(query).toArray()
             res.send(result)
         })
         app.post('/ratings', async(req, res) =>{
@@ -55,8 +66,8 @@ async function run(){
             res.send(result)
         })
         app.post('/users', async(req, res) =>{
-            const user = req.body
-            const result = await usersCollection.insertOne(user)
+            const users = req.body
+            const result = await usersCollection.insertOne(users)
             res.send(result)
         })
         

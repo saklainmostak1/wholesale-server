@@ -22,6 +22,7 @@ async function run(){
         const allProductsCollection = client.db('clothsProducts').collection('products')
         const ratingCollection =  client.db('clothsProducts').collection('ratings')
         const contactCollection =  client.db('clothsProducts').collection('contact')
+        const usersCollection =  client.db('clothsProducts').collection('users')
 
         app.get('/products', async(req, res) =>{
             const query = {}
@@ -38,6 +39,11 @@ async function run(){
             const result = await ratingCollection.find(query).limit(6).toArray()
             res.send(result)
         })
+        app.get('/contact', async(req, res) =>{
+            const query = {}
+            const result = await contactCollection.find(query).limit(6).toArray()
+            res.send(result)
+        })
         app.post('/ratings', async(req, res) =>{
             const rating = req.body
             const result = await ratingCollection.insertOne(rating)
@@ -46,6 +52,11 @@ async function run(){
         app.post('/contact', async(req, res) =>{
             const rating = req.body
             const result = await contactCollection.insertOne(rating)
+            res.send(result)
+        })
+        app.post('/users', async(req, res) =>{
+            const user = req.body
+            const result = await usersCollection.insertOne(user)
             res.send(result)
         })
         

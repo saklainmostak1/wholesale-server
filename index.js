@@ -23,12 +23,13 @@ async function run(){
         const ratingCollection =  client.db('clothsProducts').collection('ratings')
         const contactCollection =  client.db('clothsProducts').collection('contact')
         const usersCollection =  client.db('clothsProducts').collection('users')
+        const ordersCollection =  client.db('clothsProducts').collection('orders')
 
-        app.get('/products', async(req, res) =>{
-            const query = {}
-            const result = await allProductsCollection.find(query).limit(6).toArray()
-            res.send(result)
-        })
+        // app.get('/products', async(req, res) =>{
+        //     const query = {}
+        //     const result = await allProductsCollection.find(query).limit(6).toArray()
+        //     res.send(result)
+        // })
         app.get('/allProducts', async(req, res) =>{
             const query = {}
             const result = await allProductsCollection.find(query).toArray()
@@ -55,6 +56,11 @@ async function run(){
             const result = await usersCollection.find(query).toArray()
             res.send(result)
         })
+        app.get('/orders', async(req, res) =>{
+            const query = {}
+            const result = await ordersCollection.find(query).toArray()
+            res.send(result)
+        })
         app.post('/ratings', async(req, res) =>{
             const rating = req.body
             const result = await ratingCollection.insertOne(rating)
@@ -68,6 +74,11 @@ async function run(){
         app.post('/users', async(req, res) =>{
             const users = req.body
             const result = await usersCollection.insertOne(users)
+            res.send(result)
+        })
+        app.post('/orders', async(req, res) =>{
+            const orders = req.body
+            const result = await ordersCollection.insertOne(orders)
             res.send(result)
         })
         

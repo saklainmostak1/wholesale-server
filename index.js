@@ -24,6 +24,7 @@ async function run(){
         const contactCollection =  client.db('clothsProducts').collection('contact')
         const usersCollection =  client.db('clothsProducts').collection('users')
         const ordersCollection =  client.db('clothsProducts').collection('orders')
+        const repotedProductCollection =  client.db('clothsProducts').collection('report')
 
         // app.get('/products', async(req, res) =>{
         //     const query = {}
@@ -61,6 +62,11 @@ async function run(){
             const result = await ordersCollection.find(query).toArray()
             res.send(result)
         })
+        app.get('/report', async(req, res) =>{
+            const query = {}
+            const result = await repotedProductCollection.find(query).toArray()
+            res.send(result)
+        })
         app.post('/ratings', async(req, res) =>{
             const rating = req.body
             const result = await ratingCollection.insertOne(rating)
@@ -79,6 +85,11 @@ async function run(){
         app.post('/orders', async(req, res) =>{
             const orders = req.body
             const result = await ordersCollection.insertOne(orders)
+            res.send(result)
+        })
+        app.post('/report', async(req, res) =>{
+            const reports = req.body
+            const result = await repotedProductCollection.insertOne(reports)
             res.send(result)
         })
         

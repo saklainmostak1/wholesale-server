@@ -34,6 +34,12 @@ async function run(){
         app.get('/allProducts', async(req, res) =>{
             const query = {}
             const result = await allProductsCollection.find(query).toArray()
+            // const quantityQuery = {}
+            // const alreadyOrderd = await ordersCollection.find(quantityQuery).toArray()
+            // result.forEach(resul => {
+            //     const optionOrderd = alreadyOrderd.filter(order => order.name === resul.name)
+            //     console.log(optionOrderd)
+            // } )
             res.send(result)
         })
         app.get('/allProducts/:id', async(req, res) =>{
@@ -58,7 +64,8 @@ async function run(){
             res.send(result)
         })
         app.get('/orders', async(req, res) =>{
-            const query = {}
+            const email = req.query.email
+            const query = {email: email}
             const result = await ordersCollection.find(query).toArray()
             res.send(result)
         })
@@ -83,13 +90,26 @@ async function run(){
             res.send(result)
         })
         app.post('/orders', async(req, res) =>{
-            const orders = req.body
-            const result = await ordersCollection.insertOne(orders)
+            const order = req.body
+
+            const result = await ordersCollection.insertOne(order)
             res.send(result)
         })
         app.post('/report', async(req, res) =>{
             const reports = req.body
             const result = await repotedProductCollection.insertOne(reports)
+            res.send(result)
+        })
+        app.put('/users/admin/:id', async(req, res) =>{
+            const id = req.params.id
+            const filter = {_id: ObjectId(id)}
+            const options = {upsert: true}
+            const updatedDoc = {
+                $set: {
+                    role: 'admin'
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updatedDoc, options)
             res.send(result)
         })
         

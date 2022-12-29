@@ -73,6 +73,11 @@ async function run(){
             const result = await ratingCollection.find(query).limit(6).toArray()
             res.send(result)
         })
+        app.get('/allOrder', async(req, res) =>{
+            const query = {}
+            const result = await ordersCollection.find(query).limit(6).toArray()
+            res.send(result)
+        })
         app.get('/contact', async(req, res) =>{
             const query = {}
             const result = await contactCollection.find(query).limit(6).toArray()
@@ -214,6 +219,37 @@ async function run(){
                 }
             }
             const result = await usersCollection.updateOne(filter, updatedDoc, options)
+            res.send(result)
+        })
+        app.delete('/orders/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await ordersCollection.deleteOne(query)
+            res.send(result)
+        })
+        app.delete('/allReviews/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await productReviewCollection.deleteOne(query)
+            res.send(result)
+        })
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await usersCollection.deleteOne(query)
+            res.send(result)
+        })
+        app.delete('/ratings/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await ratingCollection.deleteOne(query)
+            res.send(result)
+        })
+        
+        app.delete('/report/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await repotedProductCollection.deleteOne(query)
             res.send(result)
         })
         

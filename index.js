@@ -44,6 +44,7 @@ async function run(){
         const usersCollection =  client.db('clothsProducts').collection('users')
         const ordersCollection =  client.db('clothsProducts').collection('orders')
         const repotedProductCollection =  client.db('clothsProducts').collection('report')
+        const productReviewCollection =  client.db('clothsProducts').collection('productsReviews')
 
         // app.get('/products', async(req, res) =>{
         //     const query = {}
@@ -77,11 +78,22 @@ async function run(){
             const result = await contactCollection.find(query).limit(6).toArray()
             res.send(result)
         })
-        app.get('/users', async(req, res) =>{
-            const query = {}
-            const result = await usersCollection.find(query).toArray()
-            res.send(result)
+        app.get('/users',  async (req, res) => {
+            let query = {}
+            if (req.query.email) {
+                query = {
+                    email: req.query.email,
+                }
+            }
+            const cursor = usersCollection.find(query)
+            const review = await cursor.toArray()
+            res.send(review)
         })
+        // app.get('/users', async(req, res) =>{
+        //     const query = {}
+        //     const result = await usersCollection.find(query).toArray()
+        //     res.send(result)
+        // })
 
         app.get('/users/admin/:email', async (req, res) => {
             const email = req.params.email
@@ -130,6 +142,36 @@ async function run(){
             const result = await repotedProductCollection.find(query).toArray()
             res.send(result)
         })
+
+          app.get('/allReviews',  async (req, res) => {
+            let query = {}
+            if (req.query.email) {
+                query = {
+                    email: req.query.email,
+                }
+            }
+            const cursor = productReviewCollection.find(query)
+            const review = await cursor.toArray()
+            res.send(review)
+        })
+        
+        // app.get('/productsReviews', async(req, res) =>{
+        //     const query = {}
+        //     const result = await productReviewCollection.find(query).toArray()
+        //     res.send(result)
+        // })
+        app.get('/productReviews', async (req, res) => {
+            console.log(req.query);
+            let query = {}
+            if (req.query.products) {
+                query = {
+                    products: req.query.products
+                }
+            }
+            const cursor = productReviewCollection.find(query)
+            const review = await cursor.toArray()
+            res.send(review)
+        })
         app.post('/ratings', async(req, res) =>{
             const rating = req.body
             const result = await ratingCollection.insertOne(rating)
@@ -156,6 +198,12 @@ async function run(){
             const result = await repotedProductCollection.insertOne(reports)
             res.send(result)
         })
+        app.post('/productsReviews', async(req, res) =>{
+            const reports = req.body
+            const result = await productReviewCollection.insertOne(reports)
+            res.send(result)
+        })
+        
         app.put('/users/admin/:id', async(req, res) =>{
             const id = req.params.id
             const filter = {_id: ObjectId(id)}

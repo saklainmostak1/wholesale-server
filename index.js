@@ -36,22 +36,22 @@ function verifyJWT(req, res, next) {
     })
 }
 
-async function run(){
-    try{
+async function run() {
+    try {
         const allProductsCollection = client.db('clothsProducts').collection('products')
-        const ratingCollection =  client.db('clothsProducts').collection('ratings')
-        const contactCollection =  client.db('clothsProducts').collection('contact')
-        const usersCollection =  client.db('clothsProducts').collection('users')
-        const ordersCollection =  client.db('clothsProducts').collection('orders')
-        const repotedProductCollection =  client.db('clothsProducts').collection('report')
-        const productReviewCollection =  client.db('clothsProducts').collection('productsReviews')
+        const ratingCollection = client.db('clothsProducts').collection('ratings')
+        const contactCollection = client.db('clothsProducts').collection('contact')
+        const usersCollection = client.db('clothsProducts').collection('users')
+        const ordersCollection = client.db('clothsProducts').collection('orders')
+        const repotedProductCollection = client.db('clothsProducts').collection('report')
+        const productReviewCollection = client.db('clothsProducts').collection('productsReviews')
 
         // app.get('/products', async(req, res) =>{
         //     const query = {}
         //     const result = await allProductsCollection.find(query).limit(6).toArray()
         //     res.send(result)
         // })
-        app.get('/allProducts', async(req, res) =>{
+        app.get('/allProducts', async (req, res) => {
             const query = {}
             const result = await allProductsCollection.find(query).toArray()
             // const quantityQuery = {}
@@ -62,28 +62,39 @@ async function run(){
             // } )
             res.send(result)
         })
-        app.get('/allProducts/:id', async(req, res) =>{
+        app.get('/allProducts/:id', async (req, res) => {
             const id = req.params.id
-            const filter = {_id: ObjectId(id)}
+            const filter = { _id: ObjectId(id) }
             const result = await allProductsCollection.findOne(filter)
             res.send(result)
         })
-        app.get('/ratings', async(req, res) =>{
+        app.get('/ratings', async (req, res) => {
             const query = {}
             const result = await ratingCollection.find(query).limit(6).toArray()
             res.send(result)
         })
-        app.get('/allOrder', async(req, res) =>{
+        app.get('/users/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: ObjectId(id) }
+            const result = await usersCollection.findOne(filter)
+            res.send(result)
+        })
+        app.get('/allOrder', async (req, res) => {
             const query = {}
             const result = await ordersCollection.find(query).limit(6).toArray()
             res.send(result)
         })
-        app.get('/contact', async(req, res) =>{
+        app.get('/contact', async (req, res) => {
             const query = {}
             const result = await contactCollection.find(query).limit(6).toArray()
             res.send(result)
         })
-        app.get('/users',  async (req, res) => {
+        app.get('/productsRatings', async (req, res) => {
+            const query = {}
+            const result = await productReviewCollection.find(query).toArray()
+            res.send(result)
+        })
+        app.get('/users', async (req, res) => {
             let query = {}
             if (req.query.email) {
                 query = {
@@ -106,32 +117,32 @@ async function run(){
             const user = await usersCollection.findOne(query)
             res.send({ isAdmin: user?.role === 'admin' })
         })
-        
-        app.get('/users/buyer/:email', async(req, res)=>{
+
+        app.get('/users/buyer/:email', async (req, res) => {
             const email = req.params.email
             // const id = req.params.id
             const query = { email }
             const user = await usersCollection.findOne(query)
-            res.send({isBuyers: user?.role === 'buyers' })
+            res.send({ isBuyers: user?.role === 'buyers' })
         })
 
 
-        app.get('/orders',verifyJWT, async(req, res) =>{
+        app.get('/orders', verifyJWT, async (req, res) => {
             const email = req.query.email
             const decodedEmail = req.decoded.email;
-            if(email !== decodedEmail){
-                return res.status(403).send({message: 'forbidden access'})
+            if (email !== decodedEmail) {
+                return res.status(403).send({ message: 'forbidden access' })
             }
             // console.log('token',req.headers.authorization);
-            const query = {email: email}
+            const query = { email: email }
             const result = await ordersCollection.find(query).toArray()
             res.send(result)
         })
 
 
-        app.get('/jwt', async(req, res) =>{
+        app.get('/jwt', async (req, res) => {
             const email = req.query.email
-            const query = {email: email}
+            const query = { email: email }
             const user = await usersCollection.findOne(query)
             if (user) {
                 const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
@@ -142,13 +153,13 @@ async function run(){
         })
 
 
-        app.get('/report', async(req, res) =>{
+        app.get('/report', async (req, res) => {
             const query = {}
             const result = await repotedProductCollection.find(query).toArray()
             res.send(result)
         })
 
-          app.get('/allReviews',  async (req, res) => {
+        app.get('/allReviews', async (req, res) => {
             let query = {}
             if (req.query.email) {
                 query = {
@@ -159,7 +170,7 @@ async function run(){
             const review = await cursor.toArray()
             res.send(review)
         })
-        
+
         // app.get('/productsReviews', async(req, res) =>{
         //     const query = {}
         //     const result = await productReviewCollection.find(query).toArray()
@@ -177,42 +188,42 @@ async function run(){
             const review = await cursor.toArray()
             res.send(review)
         })
-        app.post('/ratings', async(req, res) =>{
+        app.post('/ratings', async (req, res) => {
             const rating = req.body
             const result = await ratingCollection.insertOne(rating)
             res.send(result)
         })
-        app.post('/contact', async(req, res) =>{
+        app.post('/contact', async (req, res) => {
             const rating = req.body
             const result = await contactCollection.insertOne(rating)
             res.send(result)
         })
-        app.post('/users', async(req, res) =>{
+        app.post('/users', async (req, res) => {
             const users = req.body
             const result = await usersCollection.insertOne(users)
             res.send(result)
         })
-        app.post('/orders', async(req, res) =>{
+        app.post('/orders', async (req, res) => {
             const order = req.body
 
             const result = await ordersCollection.insertOne(order)
             res.send(result)
         })
-        app.post('/report', async(req, res) =>{
+        app.post('/report', async (req, res) => {
             const reports = req.body
             const result = await repotedProductCollection.insertOne(reports)
             res.send(result)
         })
-        app.post('/productsReviews', async(req, res) =>{
+        app.post('/productsReviews', async (req, res) => {
             const reports = req.body
             const result = await productReviewCollection.insertOne(reports)
             res.send(result)
         })
-        
-        app.put('/users/admin/:id', async(req, res) =>{
+
+        app.put('/users/admin/:id', async (req, res) => {
             const id = req.params.id
-            const filter = {_id: ObjectId(id)}
-            const options = {upsert: true}
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true }
             const updatedDoc = {
                 $set: {
                     role: 'admin'
@@ -225,6 +236,12 @@ async function run(){
             const id = req.params.id
             const query = { _id: ObjectId(id) }
             const result = await ordersCollection.deleteOne(query)
+            res.send(result)
+        })
+        app.delete('/allProducts/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await productReviewCollection.deleteOne(query)
             res.send(result)
         })
         app.delete('/allReviews/:id', async (req, res) => {
@@ -245,17 +262,42 @@ async function run(){
             const result = await ratingCollection.deleteOne(query)
             res.send(result)
         })
-        
+
         app.delete('/report/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
             const result = await repotedProductCollection.deleteOne(query)
             res.send(result)
         })
-        
+        app.delete('/productsRatings/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await productReviewCollection.deleteOne(query)
+            res.send(result)
+        })
+        app.put('/users/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: ObjectId(id) }
+            const user = req.body
+            const options = {upsert: true}
+            const updatedUser = {
+                $set: {
+                    name: user.name,
+                    // adress: user.adress,
+                    email: user.email,
+                    photo: user.photo
+                    
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updatedUser, options)
+            res.send(result)
+            console.log(updatedUser)
+        })
+
+
 
     }
-    finally{
+    finally {
 
     }
 
@@ -264,9 +306,9 @@ run().catch(console.log())
 
 
 
-app.get('/',( req, res) => {
+app.get('/', (req, res) => {
     res.send('api is running')
 })
-app.listen(port, () =>{
+app.listen(port, () => {
     console.log('api is running on ', port);
 })

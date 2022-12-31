@@ -79,6 +79,12 @@ async function run() {
             const result = await usersCollection.findOne(filter)
             res.send(result)
         })
+        app.get('/productsRatings/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: ObjectId(id) }
+            const result = await productReviewCollection.findOne(filter)
+            res.send(result)
+        })
         app.get('/allOrder', async (req, res) => {
             const query = {}
             const result = await ordersCollection.find(query).limit(6).toArray()
@@ -291,7 +297,41 @@ async function run() {
             }
             const result = await usersCollection.updateOne(filter, updatedUser, options)
             res.send(result)
-            console.log(updatedUser)
+            console.log(user)
+        })
+        app.put('/allProducts/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: ObjectId(id) }
+            const products = req.body
+            console.log(products);
+            const options = {upsert: true}
+            const updatedProducts = {
+                $set: {
+                    name: products.name,
+                    price: products.price,
+                    image: products.image
+                    
+                }
+            }
+            const result = await allProductsCollection.updateOne(filter, updatedProducts, options)
+            res.send(result)
+           
+        })
+        app.put('/productsRatings/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: ObjectId(id) }
+            const review = req.body
+            console.log(review)
+            const option = { upsert: true }
+            const updateReview = {
+                $set: {
+                    rating: review.rating,
+                    text: review.text
+                }
+            }
+            const result = await productReviewCollection.updateOne(filter, updateReview, option)
+            res.send(result)
+           
         })
 
 

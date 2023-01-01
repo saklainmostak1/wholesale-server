@@ -225,6 +225,11 @@ async function run() {
             const result = await productReviewCollection.insertOne(reports)
             res.send(result)
         })
+        app.post('/addProducts', async (req, res) => {
+            const reports = req.body
+            const result = await allProductsCollection.insertOne(reports)
+            res.send(result)
+        })
 
         app.put('/users/admin/:id', async (req, res) => {
             const id = req.params.id
@@ -247,7 +252,7 @@ async function run() {
         app.delete('/allProducts/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
-            const result = await productReviewCollection.deleteOne(query)
+            const result = await allProductsCollection.deleteOne(query)
             res.send(result)
         })
         app.delete('/allReviews/:id', async (req, res) => {

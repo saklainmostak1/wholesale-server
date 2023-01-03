@@ -203,6 +203,11 @@ async function run() {
             const result = await ordersCollection.findOne(query)
             res.send(result)
         })
+        app.get('/payment', async(req, res) =>{
+            const query = {}
+            const result = await paymentsCollection.find(query).toArray()
+            res.send(result)
+        })
 
         app.post('/create-payment-intent', async(req, res)=>{
             const orders = req.body
@@ -254,10 +259,31 @@ async function run() {
             const result = await usersCollection.insertOne(users)
             res.send(result)
         })
+        // app.post('/payments', async(req, res) =>{
+        //     const payment = req.body
+        //     const result = await paymentsCollection.insertOne(payment)
+        //     const id = payment.OrderId
+        //     const query = {_id: ObjectId(id) }
+        //     const updatedDoc = {
+        //         $set: {
+        //             paid: true,
+        //             transactionId: payment.transactionId 
+        //         }
+        //     }
+        //     const updated = await ordersCollection.updateOne(query, updatedDoc)
+        //     res.send(result)
+        // })
         app.post('/orders', async (req, res) => {
             const order = req.body
-
             const result = await ordersCollection.insertOne(order)
+            const id = order.OrderId
+            const query = {_id: ObjectId(id)}
+            const updatedDoc = {
+                $set: {
+                    orderd: true
+                }
+            }
+            const updated = await allProductsCollection.updateOne(query, updatedDoc)
             res.send(result)
         })
         app.post('/report', async (req, res) => {

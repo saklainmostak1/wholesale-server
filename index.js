@@ -48,11 +48,11 @@ async function run() {
         const productReviewCollection = client.db('clothsProducts').collection('productsReviews')
         const paymentsCollection = client.db('clothsProducts').collection('payments')
 
-        // app.get('/products', async(req, res) =>{
-        //     const query = {}
-        //     const result = await allProductsCollection.find(query).limit(6).toArray()
-        //     res.send(result)
-        // })
+        app.get('/products', async(req, res) =>{
+            const query = {}
+            const result = await allProductsCollection.find(query).limit(6).toArray()
+            res.send(result)
+        })
         app.get('/allProducts', async (req, res) => {
             const query = {}
             const result = await allProductsCollection.find(query).toArray()
